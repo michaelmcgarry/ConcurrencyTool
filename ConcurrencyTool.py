@@ -161,21 +161,18 @@ def get_concurrency_percentile_rank(row,df):
 def get_pct_matches_start_times(df,weekdays,sport,country,competition,threshold=0.0):
     if sport not in df['Sport'].unique():
         print(f"Sport: {sport} not in dataset")
-        return pd.DataFrame(data=[[sport,country,competition,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan]],
-                            columns=['Sport','Country','Competition',0,1,2,3,4,5,6])
+        return None
     
     countries = df.loc[df['Sport']==sport]['Country'].unique()
     if country not in countries:
         print(f"Country: {country} not in dataset")
-        return pd.DataFrame(data=[[sport,country,competition,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan]],
-                            columns=['Sport','Country','Competition',0,1,2,3,4,5,6])
+        return None
     
     comps = df.loc[(df['Sport']==sport)&(df['Country']==country)]['Competition'].unique()
     
     if competition not in comps:
         print(f"Competition: {competition} not in dataset")
-        return pd.DataFrame(data=[[sport,country,competition,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan]],
-                            columns=['Sport','Country','Competition',0,1,2,3,4,5,6])
+        return None
     else:
         print("Located Competition...")   
     
@@ -311,3 +308,6 @@ with st.container():
             filename = "ConcurrencyData{country}{competition}{sport}"
             linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download={filename}>Download Concurrency Report</a>'
             st.markdown(linko, unsafe_allow_html=True)
+            
+            conc_score = round(sum(concurrency_df['AvgConcurrencyRank'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
+            st.wrtie(f"Overall Concurrency Score: {conc_score}")
