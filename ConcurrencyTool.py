@@ -310,4 +310,4 @@ with st.container():
             st.markdown(linko, unsafe_allow_html=True)
             
             conc_score = round(sum(concurrency_df['AvgConcurrencyRank'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
-            st.wrtie(f"Overall Concurrency Score: {conc_score}")
+            st.write(f"Overall Concurrency Score: {conc_score}")
