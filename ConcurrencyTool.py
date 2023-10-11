@@ -301,6 +301,7 @@ with st.container():
                 
             #Get Concurrency Info
             st.write("Calculating Concurrency Info......")
+            full_concurrency_df = get_pct_matches_start_times(df, weekdays, sport, country, competition, threshold=0)
             concurrency_df = get_pct_matches_start_times(df, weekdays, sport, country, competition, threshold=threshold)
             st.dataframe(concurrency_df)
 
@@ -312,9 +313,9 @@ with st.container():
             linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download={filename}>Download Concurrency Report</a>'
             st.markdown(linko, unsafe_allow_html=True)
             
-            conc_score = round(sum(concurrency_df['AvgConcurrencyRank'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
-            conc_score_all = round(sum(concurrency_df['ConcurrencyRankAll'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
-            conc_score_sport = round(sum(concurrency_df['ConcurrencyRankSport'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
+            conc_score = round(sum(full_concurrency_df['AvgConcurrencyRank'] * full_concurrency_df['NumEvents']) / sum(full_concurrency_df['NumEvents']),2)
+            conc_score_all = round(sum(full_concurrency_df['RankAll'] * full_concurrency_df['NumEvents']) / sum(full_concurrency_df['NumEvents']),2)
+            conc_score_sport = round(sum(full_concurrency_df['RankSport'] * full_concurrency_df['NumEvents']) / sum(full_concurrency_df['NumEvents']),2)
             
             st.subheader("Weighted Average Concurrency Scores")
             st.write(f"Overall Average Concurrency Score: {conc_score}")
