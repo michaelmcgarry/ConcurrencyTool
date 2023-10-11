@@ -266,12 +266,15 @@ with st.container():
     st.write("Select filters from the sidebar before generating results here.")
     if "--Please Select--" not in [sport, country, competition]:
         threshold = st.slider("What is the minimum % of a competitions fixtures on a given day of the week and time you would like to see?",
-                              min_value = 0.0, max_value = 10.0, value = 2.0, step=0.1,
+                              min_value = 0.0, max_value = 10.0, value = 0.0, step=0.1,
                               help = """For example: Selecting 5.0% would only display start times which have at least 5% of the 
                               competitions total fixtures played on them. If a Sunday at 10pm only had 1% of the fixtures played then it 
                               would not be shown. Selecting 0.0 displays all start times.""")
         
         if st.button(f"Click Here To Generate Reports For {country} {competition} {sport}"):
+            total_fixtures = len(df.loc[(df['Sport']==sport)&(df['Country']==country)&(df['Competition']==competition)])
+            st.write(f"Total Annual Fixtures: {total_fixtures}")
+            
             #Get Monthly Fixtures Data & Download Excel Link
             monthly_fixtures = get_comp_fixtures_by_month(df,sport,country,competition)
             st.dataframe(monthly_fixtures)
@@ -310,4 +313,10 @@ with st.container():
             st.markdown(linko, unsafe_allow_html=True)
             
             conc_score = round(sum(concurrency_df['AvgConcurrencyRank'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
-            st.write(f"Overall Concurrency Score: {conc_score}")
+            conc_score_all = round(sum(concurrency_df['ConcurrencyRankAll'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
+            conc_score_sport = round(sum(concurrency_df['ConcurrencyRankSport'] * concurrency_df['NumEvents']) / sum(concurrency_df['NumEvents']),2)
+            
+            st.subheader("Weighted Average Concurrency Scores")
+            st.write(f"Overall Average Concurrency Score: {conc_score}")
+            st.write(f"Overall Concurrency Score vs All Sports: {conc_score_all}")
+            st.write(f"Overall Concurrency Score vs Other {sport}: {conc_score_sport}")
