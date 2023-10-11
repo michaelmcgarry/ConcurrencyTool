@@ -302,7 +302,7 @@ with st.container():
             #Get Concurrency Info
             st.write("Calculating Concurrency Info......")
             full_concurrency_df = get_pct_matches_start_times(df, weekdays, sport, country, competition, threshold=0)
-            concurrency_df = get_pct_matches_start_times(df, weekdays, sport, country, competition, threshold=threshold)
+            concurrency_df = full_concurrency_df.loc[full_concurrency_df['PctEvents']>=threshold].reset_index(drop=True).copy()
             st.dataframe(concurrency_df)
 
             towrite = io.BytesIO()
