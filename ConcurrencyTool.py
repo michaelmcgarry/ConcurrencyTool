@@ -309,7 +309,7 @@ with st.container():
             downloaded_file = concurrency_df.to_excel(towrite, encoding='utf-8', index=False, header=True)
             towrite.seek(0) # reset pointer
             b64 = base64.b64encode(towrite.read()).decode() # some strings
-            filename = "ConcurrencyData{country}{competition}{sport}"
+            filename = f"ConcurrencyData{country}{competition}{sport}"
             linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download={filename}>Download Concurrency Report</a>'
             st.markdown(linko, unsafe_allow_html=True)
             
