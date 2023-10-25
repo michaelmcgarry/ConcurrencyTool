@@ -319,8 +319,10 @@ with st.container():
             conc_score = round(sum(full_concurrency_df['AvgConcurrencyRank'] * full_concurrency_df['NumEvents']) / sum(full_concurrency_df['NumEvents']),2)
             conc_score_all = round(sum(full_concurrency_df['RankAll'] * full_concurrency_df['NumEvents']) / sum(full_concurrency_df['NumEvents']),2)
             conc_score_sport = round(sum(full_concurrency_df['RankSport'] * full_concurrency_df['NumEvents']) / sum(full_concurrency_df['NumEvents']),2)
+            conc_score_region = round(sum(full_concurrency_df['RankRegion'] * full_concurrency_df['NumEvents']) / sum(full_concurrency_df['NumEvents']),2)
             
             st.subheader("Weighted Average Concurrency Scores")
             st.write(f"Overall Average Concurrency Score: {conc_score}")
             st.write(f"Overall Concurrency Score vs All Sports: {conc_score_all}")
             st.write(f"Overall Concurrency Score vs Other {sport}: {conc_score_sport}")
+            st.write(f"Overall Concurrency Score vs Other {country}: {conc_score_region}")
